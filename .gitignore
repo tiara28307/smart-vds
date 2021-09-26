@@ -9,6 +9,11 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# compiled output
+/dist
+/tmp
+/out-tsc
+
 # Runtime data
 pids
 *.pid
@@ -46,6 +51,27 @@ typings/
 
 # TypeScript cache
 *.tsbuildinfo
+
+# IDEs and editors
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+.sass-cache
+connect.lock
+typings
 
 # Optional npm cache directory
 .npm
@@ -102,3 +128,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# System Files
+.DS_Store
+Thumbs.db
