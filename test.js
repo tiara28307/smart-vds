@@ -9,5 +9,3 @@ describe('Array', function() {
         });
     });
 });
-
-// Test protected branch master.
