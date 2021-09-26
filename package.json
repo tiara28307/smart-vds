@@ -1,0 +1,22 @@
+{
+  "name": "smart-vds",
+  "version": "1.0.0",
+  "description": "a vulnerability detection scanner utility for smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiara28307/smart-vds.git"
+  },
+  "author": "TiAra Carroll",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tiara28307/smart-vds/issues"
+  },
+  "homepage": "https://github.com/tiara28307/smart-vds#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
