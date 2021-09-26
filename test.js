@@ -1,5 +1,6 @@
 /*
     Sample test for initial vds project
+    Test Comment
  */
 var assert = require('assert');
 describe('Array', function() {
