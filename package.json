@@ -4,7 +4,7 @@
   "description": "a vulnerability detection scanner utility for smart contracts",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/tiara28307/smart-vds#readme",
   "devDependencies": {
-    "mocha": "^9.1.2"
+    "jest": "^27.2.2"
   },
   "dependencies": {
     "eslint": "^7.32.0"
