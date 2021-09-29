@@ -1,8 +1,8 @@
 {
   "name": "smart-vds",
   "version": "1.0.0",
-  "description": "a vulnerability detection scanner utility for smart contracts",
-  "main": "index.js",
+  "description": "A vulnerability detection scanner utility for Solidity smart contracts",
+  "main": "smart-vds.js",
   "scripts": {
     "test": "jest"
   },
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/tiara28307/smart-vds.git"
   },
-  "author": "TiAra Carroll",
+  "author": "Smart VDS Team",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tiara28307/smart-vds/issues"
