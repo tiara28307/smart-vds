@@ -19,6 +19,9 @@
   "devDependencies": {
     "jest": "^27.2.2"
   },
+  "bin": {
+    "smart-vds": "./smart-vds.js"
+  },
   "dependencies": {
     "@solidity-parser/parser": "^0.13.2",
     "chalk": "^4.1.2",

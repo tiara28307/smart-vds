@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
@@ -34,7 +36,7 @@ const scan = async () => {
         const fileContents = fileUtils.readFileContents(filePath).toString();
 
         // Generate parse tree from retrieved file contents
-        console.log('Parsing Solidity source code...');
+        console.log(chalk.greenBright('Parsing Solidity source code...'));
         const parseTree = parser.parse(fileContents);
         console.log(parseTree);
     } catch (err) {
