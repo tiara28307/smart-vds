@@ -17,7 +17,7 @@ mitigating actions that can be taken.
 4. Authorization through tx.origin
 5. Integer Overflow and Underflow
 
-## Getting Started from Blackboard
+## Getting Started from Blackboard (Round One)
 *Installation and usage of Smart VDS tool for Professor and TA of CS 5374.*
 
 ### Installation
@@ -41,25 +41,39 @@ mitigating actions that can be taken.
 2. Input file path into Smart VDS CLI
     ```shell
     ? Enter the file path of the Solidity smart contract that you would like to scan: 
-   /Users/tcarroll/codebase/CS-5374/assignment_1/PayRent.sol
+   /Users/tcarroll/codebase/CS-5374/assignment_1/Greeter.sol
     ```
    ```shell
-    // Output should contain:
-    {
-      type: 'SourceUnit',
-      children: [
-        { type: 'PragmaDirective', name: 'solidity', value: '^0.8.7' },
-        {
-          type: 'ContractDefinition',
-          name: 'PayRent',
-          baseContracts: [],
-          subNodes: [Array],
-          kind: 'contract'
-        }
-      ]
-    }
+    // Output should look similar to:
+      
+     Parsing Solidity source code...
+     {
+       type: 'SourceUnit',
+       children: [
+         { type: 'PragmaDirective', name: 'solidity', value: '^0.4.0' },
+         {
+             type: 'ContractDefinition',
+             name: 'Greeter',
+             baseContracts: [],
+             subNodes: [Array],
+             kind: 'contract'
+         }
+       ],
+       tokens: [
+         { type: 'Keyword', value: 'pragma' },
+         { type: 'Identifier', value: 'solidity' },
+         { type: 'Punctuator', value: '^' },
+         { type: 'Version', value: '0.4.0' },
+         { type: 'Punctuator', value: ';' },
+         { type: 'Keyword', value: 'contract' },
+         { type: 'Identifier', value: 'Greeter' },
+         { type: 'Punctuator', value: '{' },
+         { type: 'Type', value: 'string' },
+         { type: 'Keyword', value: 'public' },
+         { type: 'Identifier', value: 'yourName' },
+         ...
    ```
-
+      
 ## Getting Started from GitHub
 
 ### Installation
@@ -92,23 +106,10 @@ This project uses [node](https://nodejs.org/en/download/) and npm. Node.js sourc
     ```shell
     ? Enter the file path of the Solidity smart contract that you would like to scan: 
    /Users/tcarroll/codebase/CS-5374/assignment_1/PayRent.sol
+   
+   // Output: report
     ```
-   ```shell
-    // Output should contain:
-    {
-      type: 'SourceUnit',
-      children: [
-        { type: 'PragmaDirective', name: 'solidity', value: '^0.8.7' },
-        {
-          type: 'ContractDefinition',
-          name: 'PayRent',
-          baseContracts: [],
-          subNodes: [Array],
-          kind: 'contract'
-        }
-      ]
-    }
-   ```
+   
 ## Development
 *Developer guide for installation and usage for Smart VDS.*
 ### Dev Tools
