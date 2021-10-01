@@ -28,7 +28,7 @@ mitigating actions that can be taken.
    ```shell
    $ cd smart-vds
    ```
-5. Install packages for smart-vds globally
+5. Install package for smart-vds globally
    ```shell
    $ npm install -g
    ```
