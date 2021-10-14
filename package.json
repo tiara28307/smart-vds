@@ -36,6 +36,7 @@
     "dotenv": "^10.0.0",
     "figlet": "^1.5.2",
     "inquirer": "^8.1.5",
+    "jsonpath-plus": "^6.0.1",
     "mongoose": "^6.0.8"
   }
 }
