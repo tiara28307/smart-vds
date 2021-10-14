@@ -37,6 +37,7 @@ module.exports = {
       })
       .catch((err) => {
         console.log(chalk.red('Close database connection error: ', err))
+        return false
       })
   }
 }
