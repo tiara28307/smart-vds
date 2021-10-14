@@ -29,5 +29,14 @@ module.exports = {
       .catch(err => {
         return console.log(chalk.red(err))
       })
+  },
+  closeDbConnection: () => {
+    return mongoose.disconnect()
+      .then(() => {
+        return true
+      })
+      .catch((err) => {
+        console.log(chalk.red('Close database connection error: ', err))
+      })
   }
 }

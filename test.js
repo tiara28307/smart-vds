@@ -1,11 +1,16 @@
-/*
-    Sample test for initial vds project
- */
 const assert = require('assert')
-describe('Array', function () {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal([1, 2, 3].indexOf(4), -1)
-    })
+const db = require('./utils/databaseUtils')
+
+afterAll(async () => await db.closeDbConnection())
+
+describe('Test Cloud Database', () => {
+  it('DB Connection', async () => {
+    let isConnected
+    try {
+      isConnected = await db.establishDbConnection()
+    } catch (err) {
+      assert(err.message).toEqual('DB connection error')
+    }
+    assert.equal(isConnected, true)
   })
 })
