@@ -17,11 +17,6 @@
   },
   "homepage": "https://github.com/tiara28307/smart-vds#readme",
   "devDependencies": {
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^25.0.5",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.2.2"
   },
   "bin": {
@@ -33,6 +28,11 @@
     "clear": "^0.1.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jest": "^25.0.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "figlet": "^1.5.2",
     "inquirer": "^8.1.5",
     "mongoose": "^6.0.8"
