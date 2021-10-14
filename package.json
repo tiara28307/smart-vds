@@ -4,7 +4,8 @@
   "description": "A vulnerability detection scanner utility for Solidity smart contracts",
   "main": "smart-vds.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "./node_modules/.bin/eslint ./"
   },
   "repository": {
     "type": "git",
