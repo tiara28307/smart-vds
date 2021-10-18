@@ -39,5 +39,17 @@ module.exports = {
         console.log(chalk.red('Close database connection error: ', err))
         return false
       })
+  },
+  getPattern: (id) => {
+    let patternMap = ''
+    return VulnerabilityPattern.find({ vulnerability_id: id })
+      .then(vulnerabilities => {
+        vulnerabilities.forEach(v => {
+          patternMap = v.pattern
+        })
+        return patternMap
+      }).catch(err => {
+        return console.log(chalk.red(err))
+      })
   }
 }
