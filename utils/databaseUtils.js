@@ -41,13 +41,13 @@ module.exports = {
       })
   },
   getPattern: (id) => {
-    let patternMap = ''
+    let pattern = ''
     return VulnerabilityPattern.find({ vulnerability_id: id })
       .then(vulnerabilities => {
         vulnerabilities.forEach(v => {
-          patternMap = v.pattern
+          pattern = v.pattern
         })
-        return patternMap
+        return pattern
       }).catch(err => {
         return console.log(chalk.red(err))
       })
