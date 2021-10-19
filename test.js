@@ -39,7 +39,6 @@ describe('Test Unchecked Call Return Value Vulnerability', () => {
         '@.memberName == "delegatecall" || @.memberName == "callcode"))]'
 
     // JSON Queries for pattern matching
-    // const q1 = jsonPath({ resultType: 'value' }, p1, parseTree)
     const q1 = JSONPath({ json: parseTree, path: p1, resultType: 'value' })
     const q2 = JSONPath({ json: q1, path: p2, resultType: 'value' })
 
