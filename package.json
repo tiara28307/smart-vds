@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@solidity-parser/parser": "^0.13.2",
+    "JSONPath": "^0.11.2",
     "chalk": "^4.1.2",
     "clear": "^0.1.0",
     "dotenv": "^10.0.0",
