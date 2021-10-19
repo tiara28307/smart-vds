@@ -41,8 +41,9 @@ describe('Test Unchecked Call Return Value Vulnerability', () => {
     // JSON Queries for pattern matching
     const q1 = JSONPath({ resultType: 'value' }, p1, parseTree)
     const q2 = JSONPath({ resultType: 'value' }, p2, q1)
-    // See if any vulnerabilities exists
+    // Check if vulnerability is found
     const vulnerabilityFound = q2.length > 0
+
     assert.equal(vulnerabilityFound, true, 'Should return vulnerability found.')
   })
 })
