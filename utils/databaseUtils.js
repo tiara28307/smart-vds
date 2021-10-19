@@ -17,12 +17,12 @@ module.exports = {
         return false
       })
   },
-  retrievePatterns: () => {
+  retrieveAllPatterns: () => {
     const vulnerabilitiesMap = {}
     return VulnerabilityPattern.find({})
       .then(vulnerabilities => {
         vulnerabilities.forEach(vulnerability => {
-          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.pattern
+          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.patterns
         })
         return vulnerabilitiesMap
       })
@@ -40,15 +40,16 @@ module.exports = {
         return false
       })
   },
-  getPattern: (id) => {
-    let pattern = ''
+  retrievePatterns: (id) => {
+    let patterns = {}
     return VulnerabilityPattern.find({ vulnerability_id: id })
       .then(vulnerabilities => {
-        vulnerabilities.forEach(v => {
-          pattern = v.pattern
+        vulnerabilities.forEach(vulnerability => {
+          patterns = vulnerability.patterns
         })
-        return pattern
-      }).catch(err => {
+        return patterns
+      })
+      .catch(err => {
         return console.log(chalk.red(err))
       })
   }
