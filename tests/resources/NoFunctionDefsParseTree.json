@@ -1,0 +1,133 @@
+{
+  "type": "SourceUnit",
+  "children": [
+    {
+      "type": "PragmaDirective",
+      "name": "solidity",
+      "value": "^0.6.0"
+    },
+    {
+      "type": "ContractDefinition",
+      "name": "MyContract",
+      "baseContracts": [],
+      "subNodes": [
+        {
+          "type": "StateVariableDeclaration",
+          "variables": [
+            {
+              "type": "VariableDeclaration",
+              "typeName": {
+                "type": "Mapping",
+                "keyType": {
+                  "type": "ElementaryTypeName",
+                  "name": "address",
+                  "stateMutability": null
+                },
+                "valueType": {
+                  "type": "ElementaryTypeName",
+                  "name": "uint",
+                  "stateMutability": null
+                }
+              },
+              "name": "balances",
+              "identifier": {
+                "type": "Identifier",
+                "name": "balances"
+              },
+              "expression": null,
+              "visibility": "public",
+              "isStateVar": true,
+              "isDeclaredConst": false,
+              "isIndexed": false,
+              "isImmutable": false,
+              "override": null,
+              "storageLocation": null
+            }
+          ],
+          "initialValue": null
+        },
+        {
+          "type": "StateVariableDeclaration",
+          "variables": [
+            {
+              "type": "VariableDeclaration",
+              "typeName": {
+                "type": "ElementaryTypeName",
+                "name": "uint",
+                "stateMutability": null
+              },
+              "name": "contractNumber",
+              "identifier": {
+                "type": "Identifier",
+                "name": "contractNumber"
+              },
+              "expression": {
+                "type": "NumberLiteral",
+                "number": "0",
+                "subdenomination": null
+              },
+              "visibility": "default",
+              "isStateVar": true,
+              "isDeclaredConst": false,
+              "isIndexed": false,
+              "isImmutable": false,
+              "override": null,
+              "storageLocation": null
+            }
+          ],
+          "initialValue": {
+            "type": "NumberLiteral",
+            "number": "0",
+            "subdenomination": null
+          }
+        },
+        {
+          "type": "StateVariableDeclaration",
+          "variables": [
+            {
+              "type": "VariableDeclaration",
+              "typeName": {
+                "type": "ElementaryTypeName",
+                "name": "string",
+                "stateMutability": null
+              },
+              "name": "contractName",
+              "identifier": {
+                "type": "Identifier",
+                "name": "contractName"
+              },
+              "expression": {
+                "type": "StringLiteral",
+                "value": "My Contract",
+                "parts": [
+                  "My Contract"
+                ],
+                "isUnicode": [
+                  false
+                ]
+              },
+              "visibility": "default",
+              "isStateVar": true,
+              "isDeclaredConst": false,
+              "isIndexed": false,
+              "isImmutable": false,
+              "override": null,
+              "storageLocation": null
+            }
+          ],
+          "initialValue": {
+            "type": "StringLiteral",
+            "value": "My Contract",
+            "parts": [
+              "My Contract"
+            ],
+            "isUnicode": [
+              false
+            ]
+          }
+        }
+      ],
+      "kind": "contract"
+    }
+  ]
+}

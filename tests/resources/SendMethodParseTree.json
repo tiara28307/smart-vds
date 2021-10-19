@@ -1,0 +1,236 @@
+{
+  "type": "SourceUnit",
+  "children": [
+    {
+      "type": "PragmaDirective",
+      "name": "solidity",
+      "value": "0.6.0"
+    },
+    {
+      "type": "ContractDefinition",
+      "name": "TransferContract",
+      "baseContracts": [],
+      "subNodes": [
+        {
+          "type": "StateVariableDeclaration",
+          "variables": [
+            {
+              "type": "VariableDeclaration",
+              "typeName": {
+                "type": "Mapping",
+                "keyType": {
+                  "type": "ElementaryTypeName",
+                  "name": "address",
+                  "stateMutability": null
+                },
+                "valueType": {
+                  "type": "ElementaryTypeName",
+                  "name": "uint",
+                  "stateMutability": null
+                }
+              },
+              "name": "balances",
+              "identifier": {
+                "type": "Identifier",
+                "name": "balances"
+              },
+              "expression": null,
+              "visibility": "public",
+              "isStateVar": true,
+              "isDeclaredConst": false,
+              "isIndexed": false,
+              "isImmutable": false,
+              "override": null,
+              "storageLocation": null
+            }
+          ],
+          "initialValue": null
+        },
+        {
+          "type": "FunctionDefinition",
+          "name": "sendBalance",
+          "parameters": [],
+          "returnParameters": null,
+          "body": {
+            "type": "Block",
+            "statements": [
+              {
+                "type": "VariableDeclarationStatement",
+                "variables": [
+                  {
+                    "type": "VariableDeclaration",
+                    "typeName": {
+                      "type": "ElementaryTypeName",
+                      "name": "uint",
+                      "stateMutability": null
+                    },
+                    "name": "bal",
+                    "identifier": {
+                      "type": "Identifier",
+                      "name": "bal"
+                    },
+                    "storageLocation": null,
+                    "isStateVar": false,
+                    "isIndexed": false,
+                    "expression": null
+                  }
+                ],
+                "initialValue": {
+                  "type": "IndexAccess",
+                  "base": {
+                    "type": "Identifier",
+                    "name": "balances"
+                  },
+                  "index": {
+                    "type": "MemberAccess",
+                    "expression": {
+                      "type": "Identifier",
+                      "name": "msg"
+                    },
+                    "memberName": "sender"
+                  }
+                }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "FunctionCall",
+                  "expression": {
+                    "type": "Identifier",
+                    "name": "require"
+                  },
+                  "arguments": [
+                    {
+                      "type": "BinaryOperation",
+                      "operator": ">",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "bal"
+                      },
+                      "right": {
+                        "type": "NumberLiteral",
+                        "number": "0",
+                        "subdenomination": null
+                      }
+                    }
+                  ],
+                  "names": [],
+                  "identifiers": []
+                }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "BinaryOperation",
+                  "operator": "=",
+                  "left": {
+                    "type": "IndexAccess",
+                    "base": {
+                      "type": "Identifier",
+                      "name": "balances"
+                    },
+                    "index": {
+                      "type": "MemberAccess",
+                      "expression": {
+                        "type": "Identifier",
+                        "name": "msg"
+                      },
+                      "memberName": "sender"
+                    }
+                  },
+                  "right": {
+                    "type": "NumberLiteral",
+                    "number": "0",
+                    "subdenomination": null
+                  }
+                }
+              },
+              {
+                "type": "VariableDeclarationStatement",
+                "variables": [
+                  {
+                    "type": "VariableDeclaration",
+                    "typeName": {
+                      "type": "ElementaryTypeName",
+                      "name": "bool",
+                      "stateMutability": null
+                    },
+                    "name": "sent",
+                    "identifier": {
+                      "type": "Identifier",
+                      "name": "sent"
+                    },
+                    "storageLocation": null,
+                    "isStateVar": false,
+                    "isIndexed": false,
+                    "expression": null
+                  }
+                ],
+                "initialValue": {
+                  "type": "FunctionCall",
+                  "expression": {
+                    "type": "MemberAccess",
+                    "expression": {
+                      "type": "MemberAccess",
+                      "expression": {
+                        "type": "Identifier",
+                        "name": "msg"
+                      },
+                      "memberName": "sender"
+                    },
+                    "memberName": "send"
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "bal"
+                    }
+                  ],
+                  "names": [],
+                  "identifiers": []
+                }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "FunctionCall",
+                  "expression": {
+                    "type": "Identifier",
+                    "name": "require"
+                  },
+                  "arguments": [
+                    {
+                      "type": "Identifier",
+                      "name": "sent"
+                    },
+                    {
+                      "type": "StringLiteral",
+                      "value": "Failed to send Ether",
+                      "parts": [
+                        "Failed to send Ether"
+                      ],
+                      "isUnicode": [
+                        false
+                      ]
+                    }
+                  ],
+                  "names": [],
+                  "identifiers": []
+                }
+              }
+            ]
+          },
+          "visibility": "public",
+          "modifiers": [],
+          "override": null,
+          "isConstructor": false,
+          "isReceiveEther": false,
+          "isFallback": false,
+          "isVirtual": false,
+          "stateMutability": "payable"
+        }
+      ],
+      "kind": "contract"
+    }
+  ]
+}
