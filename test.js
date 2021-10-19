@@ -1,6 +1,6 @@
 const assert = require('assert')
 const db = require('./utils/databaseUtils')
-const JSONPath = require('jsonpath')
+const { JSONPath } = require('jsonpath-plus')
 const file = require('./utils/fileUtils')
 const parser = require('@solidity-parser/parser')
 
@@ -39,8 +39,10 @@ describe('Test Unchecked Call Return Value Vulnerability', () => {
         '@.memberName == "delegatecall" || @.memberName == "callcode"))]'
 
     // JSON Queries for pattern matching
-    const q1 = JSONPath({ resultType: 'value' }, p1, parseTree)
-    const q2 = JSONPath({ resultType: 'value' }, p2, q1)
+    // const q1 = jsonPath({ resultType: 'value' }, p1, parseTree)
+    const q1 = JSONPath({ json: parseTree, path: p1, resultType: 'value' })
+    const q2 = JSONPath({ json: q1, path: p2, resultType: 'value' })
+
     // Check if vulnerability is found
     const vulnerabilityFound = q2.length > 0
 
