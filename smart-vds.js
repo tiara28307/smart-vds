@@ -46,7 +46,7 @@ const scan = async () => {
     if (connectEstablished) {
       console.log(chalk.greenBright('Successfully connected to database...'))
       // Retrieve vulnerabilities (patterns and associated information) from DB
-      const vulnerabilitiesMap = await databaseUtils.retrievePatterns()
+      const vulnerabilitiesMap = await databaseUtils.retrieveAllPatterns()
       console.log(vulnerabilitiesMap)
     } else {
       process.exit(0)

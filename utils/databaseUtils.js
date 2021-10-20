@@ -17,12 +17,12 @@ module.exports = {
         return false
       })
   },
-  retrievePatterns: () => {
+  retrieveAllPatterns: () => {
     const vulnerabilitiesMap = {}
     return VulnerabilityPattern.find({})
       .then(vulnerabilities => {
         vulnerabilities.forEach(vulnerability => {
-          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.pattern
+          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.patterns
         })
         return vulnerabilitiesMap
       })
@@ -38,6 +38,19 @@ module.exports = {
       .catch((err) => {
         console.log(chalk.red('Close database connection error: ', err))
         return false
+      })
+  },
+  retrievePatterns: (id) => {
+    let patterns = {}
+    return VulnerabilityPattern.find({ vulnerability_id: id })
+      .then(vulnerabilities => {
+        vulnerabilities.forEach(vulnerability => {
+          patterns = vulnerability.patterns
+        })
+        return patterns
+      })
+      .catch(err => {
+        return console.log(chalk.red(err))
       })
   }
 }
