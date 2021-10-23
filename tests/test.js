@@ -259,14 +259,14 @@ describe('Test message call with hardcoded gas amount vulnerability detector', (
 })
 
 describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
-  it('should detect one unchecked call return value', () => {
+  it('should detect one unchecked call return value', async () => {
     // Arrange
     const uncheckedCallReturnValueFilePath = 'tests/resources/UncheckedCallReturnValue.sol'
     const fileContents = file.readFileContents(uncheckedCallReturnValueFilePath).toString()
     const parseTree = parser.parse(fileContents)
 
     // Act
-    const uncheckedCallReturnVulnerability = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
+    const uncheckedCallReturnVulnerability = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
     const vulnerabilityDetected = uncheckedCallReturnVulnerability[0] === true &&
         uncheckedCallReturnVulnerability[1].length === 1
 
@@ -274,27 +274,27 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
     assert.equal(vulnerabilityDetected, true, 'Should return vulnerability found.')
   })
 
-  it('should detect multiple unchecked call return values', () => {
+  it('should detect multiple unchecked call return values', async () => {
     // Arrange
     const uncheckedCallReturnValuesFilePath = 'tests/resources/UncheckedCallReturnValues.sol'
     const fileContents = file.readFileContents(uncheckedCallReturnValuesFilePath).toString()
     const parseTree = parser.parse(fileContents)
 
     // Act
-    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
+    const vulnerabilityDetected = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
 
     // Assert
     assert.equal(vulnerabilityDetected[0], true, 'Should return multiple vulnerabilities found.')
   })
 
-  it('should not detect unchecked call return value', () => {
+  it('should not detect unchecked call return value', async () => {
     // Arrange
     const uncheckedCallReturnValuesFilePath = 'tests/resources/NoUncheckedCallReturnValue.sol'
     const fileContents = file.readFileContents(uncheckedCallReturnValuesFilePath).toString()
     const parseTree = parser.parse(fileContents)
 
     // Act
-    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
+    const vulnerabilityDetected = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
 
     // Assert
     assert.equal(vulnerabilityDetected[0], false, 'Should return no vulnerabilities found.')
