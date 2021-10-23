@@ -40,7 +40,9 @@ const scan = async () => {
     console.log(chalk.greenBright('Parsing Solidity source code...'))
     const parseTree = parser.parse(fileContents)
     // Scan parse tree for vulnerabilities
+    console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
     await vulnerabilityScanner(parseTree)
+    console.log(chalk.greenBright('Scan complete.'))
   } catch (err) {
     if (err instanceof parser.ParserError) {
       console.error(chalk.red(err.errors))
