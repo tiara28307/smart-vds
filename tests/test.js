@@ -258,18 +258,45 @@ describe('Test message call with hardcoded gas amount vulnerability detector', (
   })
 })
 
-describe('Test Unchecked Call Return Value Vulnerability', () => {
-  it('Unchecked Call Return Value Detected', () => {
-    // Get parse tree of sample smart contract for Unchecked Call Return Value
+describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
+  it('should detect one unchecked call return value', () => {
     // Arrange
-    const uncheckedCallReturnFilePath = 'tests/resources/UncheckedCallReturnValue.sol'
-    const fileContents = file.readFileContents(uncheckedCallReturnFilePath).toString()
+    const uncheckedCallReturnValueFilePath = 'tests/resources/UncheckedCallReturnValue.sol'
+    const fileContents = file.readFileContents(uncheckedCallReturnValueFilePath).toString()
+    const parseTree = parser.parse(fileContents)
+
+    // Act
+    const uncheckedCallReturnVulnerability = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
+    const vulnerabilityDetected = uncheckedCallReturnVulnerability[0] === true &&
+        uncheckedCallReturnVulnerability[1].length === 1
+
+    // Assert
+    assert.equal(vulnerabilityDetected, true, 'Should return vulnerability found.')
+  })
+
+  it('should detect multiple unchecked call return values', () => {
+    // Arrange
+    const uncheckedCallReturnValuesFilePath = 'tests/resources/UncheckedCallReturnValues.sol'
+    const fileContents = file.readFileContents(uncheckedCallReturnValuesFilePath).toString()
     const parseTree = parser.parse(fileContents)
 
     // Act
     const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
 
     // Assert
-    assert.equal(vulnerabilityDetected, true, 'Should return vulnerability found.')
+    assert.equal(vulnerabilityDetected[0], true, 'Should return multiple vulnerabilities found.')
+  })
+
+  it('should not detect unchecked call return value', () => {
+    // Arrange
+    const uncheckedCallReturnValuesFilePath = 'tests/resources/NoUncheckedCallReturnValue.sol'
+    const fileContents = file.readFileContents(uncheckedCallReturnValuesFilePath).toString()
+    const parseTree = parser.parse(fileContents)
+
+    // Act
+    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree)
+
+    // Assert
+    assert.equal(vulnerabilityDetected[0], false, 'Should return no vulnerabilities found.')
   })
 })

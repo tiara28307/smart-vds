@@ -11,5 +11,13 @@ module.exports = {
     ecmaVersion: 12
   },
   rules: {
-  }
+  },
+  overrides: [
+    {
+      files: ['*.js'],
+      rules: {
+        'jest/expect-expect': 'off'
+      }
+    }
+  ]
 }
