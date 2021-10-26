@@ -13,7 +13,7 @@ contract Types {
     // demonstrate While loop'
     function loop(
     ) public returns(uint[] memory){
-    while(j <= 0) {
+    while(j <= (2**8-1)) {
         j++;
         data.push(j);
      }

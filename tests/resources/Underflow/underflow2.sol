@@ -9,5 +9,10 @@ contract underflow
 	{
 		balance = balance - deposit;
 	}
+	balance = balance - deposit;
+	if(deposit < 200)
+	{
+		deposit = deposit - 10;
+	}
  }
 }

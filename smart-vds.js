@@ -38,8 +38,11 @@ const scan = async () => {
 
     // Generate parse tree from retrieved file contents
     console.log(chalk.greenBright('Parsing Solidity source code...'))
-    const parseTree = parser.parse(fileContents, { tokens: true })
-    console.log(parseTree)
+    //const parseTree = parser.parse(fileContents, { tokens: true })
+    //console.log(parseTree)
+
+    const parseTree = parser.parse(fileContents)
+    console.log(JSON.stringify(parseTree))
 
     // Connect to DB
     const connectEstablished = await databaseUtils.establishDbConnection()
