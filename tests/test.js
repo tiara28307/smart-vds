@@ -302,7 +302,6 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
 })
 
 describe('Test TX Origin Vulnerability', () => {
-
   // Detect tx.origin which is declared in If statement and assignment of Tx.origin is in left side. eg. if(tx.origin == owner)
   it('Detect TX.Origin in If Statement and assignment is Left Side in If Statement. eg. if(tx.origin == owner)', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin1.sol'
@@ -350,7 +349,6 @@ describe('Test TX Origin Vulnerability', () => {
 })
 
 describe('Test Underflow Vulnerability', () => {
-
   // Underflow condition found in Smart Contract
   it('Underflow condition found in Smart Contract', () => {
     const underflowfile = 'tests/resources/Underflow/underflow1.sol'
@@ -434,7 +432,6 @@ describe('Test Underflow Vulnerability', () => {
 })
 
 describe('Test Overflow Vulnerability', () => {
-
   // Overflow condition found in Smart Contract
   it('Overflow condition found in Smart Contract', () => {
     const overflowfile = 'tests/resources/Overflow/overflow3.sol'
