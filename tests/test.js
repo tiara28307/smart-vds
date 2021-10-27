@@ -314,101 +314,86 @@ describe('Test TX Origin Vulnerability', () => {
 
   // Detect tx.origin which is declared in Require statement. eg. require(tx.origin == owner)
   it('Detect TX.Origin in Require Statement. eg. require(tx.origin == msg.sender)', () => {
-     const txoriginfile = 'tests/resources/Tx.origin/txorigin2.sol'
-     const fileContents = file.readFileContents(txoriginfile).toString()
-     const parseTree = parser.parse(fileContents)
-     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-     assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is found in Smart Contract')
+    const txoriginfile = 'tests/resources/Tx.origin/txorigin2.sol'
+    const fileContents = file.readFileContents(txoriginfile).toString()
+    const parseTree = parser.parse(fileContents)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
   // Tx.origin is not mentioned in smart contract
   it('Detect TX.Origin is not found in Smart Contract', () => {
-     const txoriginfile = 'tests/resources/Tx.origin/txorigin3.sol'
-     const fileContents = file.readFileContents(txoriginfile).toString()
-     const parseTree = parser.parse(fileContents)
-     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-     assert.equal(TxOriginFound[0], 0, 'Vulnerability TX.Origin is found in Smart Contract')
+    const txoriginfile = 'tests/resources/Tx.origin/txorigin3.sol'
+    const fileContents = file.readFileContents(txoriginfile).toString()
+    const parseTree = parser.parse(fileContents)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    assert.equal(TxOriginFound[0], 0, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
   // Detect tx.origin which is declared in If statement and assignment of Tx.origin is in right side. eg. if(owner == tx.origin)
   it('Detect TX.Origin in If Statement and assignment is Right Side in If Statement. eg. if(owner == tx.origin)', () => {
-     const txoriginfile = 'tests/resources/Tx.origin/txorigin4.sol'
-     const fileContents = file.readFileContents(txoriginfile).toString()
-     const parseTree = parser.parse(fileContents)
-     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-     assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
+    const txoriginfile = 'tests/resources/Tx.origin/txorigin4.sol'
+    const fileContents = file.readFileContents(txoriginfile).toString()
+    const parseTree = parser.parse(fileContents)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
   })
 
   // Detect tx.origin is used to assign as the owner of the smart contract
   it('Detect TX.Origin in Smart contract which is used as assignment to the owner of the contract. eg. owner = tx.origin', () => {
-     const txoriginfile = 'tests/resources/Tx.origin/txorigin5.sol'
-     const fileContents = file.readFileContents(txoriginfile).toString()
-     const parseTree = parser.parse(fileContents)
-     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-     assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
+    const txoriginfile = 'tests/resources/Tx.origin/txorigin5.sol'
+    const fileContents = file.readFileContents(txoriginfile).toString()
+    const parseTree = parser.parse(fileContents)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
   })
 })
 
 describe('Test Underflow Vulnerability', () => {
 
-  // Underflow condition found in Smart  Contract
+  // Underflow condition found in Smart Contract
   it('Underflow condition found in Smart Contract', () => {
     const underflowfile = 'tests/resources/Underflow/underflow1.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 1")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
-  // Underflow condition is handled in If Statement
+  // Underflow condition found in Smart Contract
   it('Underflow condition is handled in If Statement', () => {
     const underflowfile = 'tests/resources/Underflow/underflow2.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 2")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
-  // Underflow condition is handled in If Statement
-  it('Underflow condition is handled in If Statement', () => {
+  // Underflow condition found in Smart Contract
+  it('Underflow condition found in If Statement', () => {
     const underflowfile = 'tests/resources/Underflow/underflow10.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 3")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
   // Underflow condition is handled in If Statement
-  it('Underflow condition is handled in If Statement', () => {
+  it('Underflow condition is handled in If Statement with multiple condition', () => {
     const underflowfile = 'tests/resources/Underflow/underflow11.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 4")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
-  // Underflow condition is handled in If Statement
-  it('Underflow condition is handled in If Statement', () => {
+  // Underflow condition found in Smart Contract
+  it('Underflow condition is handled in If Statement another example', () => {
     const underflowfile = 'tests/resources/Underflow/underflow12.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 5")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
-  })
-
-  // Underflow condition is handled using Safemath Library
-  it('Underflow condition is handled using Safemath Library', () => {
-    const underflowfile = 'tests/resources/Underflow/underflow4.sol'
-    const fileContents = file.readFileContents(underflowfile).toString()
-    const parseTree = parser.parse(fileContents)
-    console.log("Test case 6")
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
-    assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
   // Underflow condition is handled in While Statement
@@ -416,7 +401,6 @@ describe('Test Underflow Vulnerability', () => {
     const underflowfile = 'tests/resources/Underflow/underflow6.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 7")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is found in Smart Contract.')
   })
@@ -426,7 +410,6 @@ describe('Test Underflow Vulnerability', () => {
     const underflowfile = 'tests/resources/Underflow/underflow8.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 8")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
@@ -436,7 +419,6 @@ describe('Test Underflow Vulnerability', () => {
     const underflowfile = 'tests/resources/Underflow/underflow7.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 9")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is found in Smart Contract.')
   })
@@ -446,7 +428,6 @@ describe('Test Underflow Vulnerability', () => {
     const underflowfile = 'tests/resources/Underflow/underflow9.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test case 10")
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
@@ -455,7 +436,7 @@ describe('Test Underflow Vulnerability', () => {
 describe('Test Overflow Vulnerability', () => {
 
   // Overflow condition found in Smart Contract
-  it('Underflow condition found in Smart Contract', () => {
+  it('Overflow condition found in Smart Contract', () => {
     const overflowfile = 'tests/resources/Overflow/overflow3.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
@@ -464,7 +445,7 @@ describe('Test Overflow Vulnerability', () => {
   })
 
   // Overflow condition handled in Smart Contract
-  it('Overflow condition handled in Smart Contract', () => {
+  it('Overflow condition handled in If condition for uint8', () => {
     const overflowfile = 'tests/resources/Overflow/overflow1.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
@@ -473,7 +454,7 @@ describe('Test Overflow Vulnerability', () => {
   })
 
   // Overflow condition handled in Smart Contract
-  it('Overflow condition handled in Smart Contract', () => {
+  it('Overflow condition handled in If condition for uint16', () => {
     const overflowfile = 'tests/resources/Overflow/overflow5.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
@@ -495,7 +476,6 @@ describe('Test Overflow Vulnerability', () => {
     const overflowfile = 'tests/resources/Overflow/overflow8.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    console.log("Test cases #######")
     const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow not found in Smart Contract.')
   })
