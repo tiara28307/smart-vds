@@ -17,18 +17,22 @@ module.exports = {
         return false
       })
   },
-  retrieveAllPatterns: () => {
-    const vulnerabilitiesMap = {}
-    return VulnerabilityPattern.find({})
-      .then(vulnerabilities => {
-        vulnerabilities.forEach(vulnerability => {
-          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.patterns
-        })
-        return vulnerabilitiesMap
-      })
-      .catch(err => {
-        return console.log(chalk.red(err))
-      })
+  isDbConnected: () => {
+    const state = mongoose.connection.readyState
+    switch (state) {
+      case 0:
+        console.log(chalk.red('Database disconnected.'))
+        return false
+      case 1:
+        console.log(chalk.greenBright('Database connected.'))
+        return true
+      case 2:
+        console.log(chalk.greenBright('Database is connecting...'))
+        return false
+      case 3:
+        console.log(chalk.red('Database is disconnecting...'))
+        return false
+    }
   },
   closeDbConnection: () => {
     return mongoose.disconnect()
@@ -48,6 +52,19 @@ module.exports = {
           patterns = vulnerability.patterns
         })
         return patterns
+      })
+      .catch(err => {
+        return console.log(chalk.red(err))
+      })
+  },
+  retrieveAllPatterns: () => {
+    const vulnerabilitiesMap = {}
+    return VulnerabilityPattern.find({})
+      .then(vulnerabilities => {
+        vulnerabilities.forEach(vulnerability => {
+          vulnerabilitiesMap[vulnerability.vulnerability_name] = vulnerability.patterns
+        })
+        return vulnerabilitiesMap
       })
       .catch(err => {
         return console.log(chalk.red(err))
