@@ -310,8 +310,7 @@ describe('Test TX Origin Vulnerability', () => {
     assert.equal(TxOriginFound.length, 2, 'Vulnerability TX.Origin is not found in Smart Contract.')
   })
 
-  // Detect tx.origin which is declared in Require statement. eg. require(tx.origin == owner)
-  it('Detect TX.Origin in Require Statement. eg. require(tx.origin == msg.sender)', () => {
+  it('should detect 3 vulnerable statements: one if statement, one require statement, and one assignment statement', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin2.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
@@ -319,8 +318,8 @@ describe('Test TX Origin Vulnerability', () => {
     assert.equal(TxOriginFound.length, 3, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
-  // // Tx.origin is not mentioned in smart contract
-  it('Detect TX.Origin is not found in Smart Contract', () => {
+  // tx.origin is not utilized by tested smart contract
+  it('should not detect any vulnerable statements', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin3.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
@@ -328,8 +327,7 @@ describe('Test TX Origin Vulnerability', () => {
     assert.equal(TxOriginFound.length, 0, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
-  // Detect tx.origin which is declared in If statement and assignment of Tx.origin is in right side. eg. if(owner == tx.origin)
-  it('Detect TX.Origin in If Statement and assignment is Right Side in If Statement. eg. if(owner == tx.origin)', () => {
+  it('should detect a single vulnerable assignment statement', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin4.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
