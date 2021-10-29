@@ -100,7 +100,7 @@ describe('Test outdated compiler version (SWC-102) vulnerability detector', () =
       const parseTreeFile = fs.readFileSync('tests/resources/NoPragmaStateParseTree.json', { encoding: 'utf-8', flag: 'r' })
       const parseTree = JSON.parse(parseTreeFile.toString())
       const pragmaStatement = vulnerabilityDetectors.detectOutdatedCompilerVersion(parseTree)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma statement.' })
+      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
@@ -142,7 +142,7 @@ describe('Test floating pragma (SWC-103) vulnerability detector', () => {
       const parseTreeFile = fs.readFileSync('tests/resources/NoPragmaStateParseTree.json', { encoding: 'utf-8', flag: 'r' })
       const parseTree = JSON.parse(parseTreeFile.toString())
       const pragmaStatement = vulnerabilityDetectors.detectFloatingPragma(parseTree)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma statement.' })
+      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
@@ -302,13 +302,12 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
 })
 
 describe('Test TX Origin Vulnerability', () => {
-  // Detect tx.origin which is declared in If statement and assignment of Tx.origin is in left side. eg. if(tx.origin == owner)
-  it('Detect TX.Origin in If Statement and assignment is Left Side in If Statement. eg. if(tx.origin == owner)', () => {
+  it('should detect tx.origin in if statement and require statement', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin1.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract.')
+    assert.equal(TxOriginFound.length, 2, 'Vulnerability TX.Origin is not found in Smart Contract.')
   })
 
   // Detect tx.origin which is declared in Require statement. eg. require(tx.origin == owner)
@@ -317,16 +316,16 @@ describe('Test TX Origin Vulnerability', () => {
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is found in Smart Contract')
+    assert.equal(TxOriginFound.length, 3, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
-  // Tx.origin is not mentioned in smart contract
+  // // Tx.origin is not mentioned in smart contract
   it('Detect TX.Origin is not found in Smart Contract', () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin3.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-    assert.equal(TxOriginFound[0], 0, 'Vulnerability TX.Origin is found in Smart Contract')
+    assert.equal(TxOriginFound.length, 0, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
   // Detect tx.origin which is declared in If statement and assignment of Tx.origin is in right side. eg. if(owner == tx.origin)
@@ -335,16 +334,7 @@ describe('Test TX Origin Vulnerability', () => {
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
     const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
-  })
-
-  // Detect tx.origin is used to assign as the owner of the smart contract
-  it('Detect TX.Origin in Smart contract which is used as assignment to the owner of the contract. eg. owner = tx.origin', () => {
-    const txoriginfile = 'tests/resources/Tx.origin/txorigin5.sol'
-    const fileContents = file.readFileContents(txoriginfile).toString()
-    const parseTree = parser.parse(fileContents)
-    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
-    assert.equal(TxOriginFound[0], 1, 'Vulnerability TX.Origin is not found in Smart Contract')
+    assert.equal(TxOriginFound.length, 1, 'Vulnerability TX.Origin is not found in Smart Contract')
   })
 })
 
@@ -356,6 +346,14 @@ describe('Test Underflow Vulnerability', () => {
     const parseTree = parser.parse(fileContents)
     const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
+  })
+
+  it('should not detect vulnerability because compiler version > 0.8.0', () => {
+    const underflowFile = 'tests/resources/Underflow/underflow13.sol'
+    const fileContents = file.readFileContents(underflowFile).toString()
+    const parseTree = parser.parse(fileContents)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow was found in Smart Contract.')
   })
 
   // Underflow condition found in Smart Contract
@@ -439,6 +437,14 @@ describe('Test Overflow Vulnerability', () => {
     const parseTree = parser.parse(fileContents)
     const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
+  })
+
+  it('should not detect vulnerability because compiler version > 0.8.0', () => {
+    const overflowFile = 'tests/resources/Overflow/overflow10.sol'
+    const fileContents = file.readFileContents(overflowFile).toString()
+    const parseTree = parser.parse(fileContents)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow was found in Smart Contract.')
   })
 
   // Overflow condition handled in Smart Contract
