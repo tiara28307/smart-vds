@@ -1,4 +1,4 @@
-pragma solidity 0.8.9;
+pragma solidity >=0.7.0 <0.9.0;
 
 contract overflow
 {
@@ -6,7 +6,7 @@ contract overflow
 
  function add(uint8 deposit) public
  {
-  balance = balance + deposit;
+  balance += deposit;
  }
 
 }
