@@ -1,13 +1,20 @@
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.6.0;
 
 contract Phishable{
     address public owner;
-    constructor (address _owner){
+    uint256 balance = 100;
+    constructor (address _owner) public {
         owner = _owner;
-}
-function() external payable {}// collect ether
-function withdrawAll(address _recipient)public{
-require(tx.origin == owner);
-        _recipient.transfer(this.balance);
-}
+    }
+
+    function addToBalance(uint256 amount) public {
+        if (msg.sender == tx.origin){
+            balance += amount;
+        }
+    }
+
+    function withdrawAll(uint256 amount) public{
+        require(tx.origin == owner);
+        balance -= amount;
+    }
 }
