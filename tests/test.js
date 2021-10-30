@@ -116,7 +116,7 @@ describe('Test outdated compiler version (SWC-102) vulnerability detector', () =
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.OUTDATED_COMPILER_VERSION)
       const pragmaStatement = vulnerabilityDetectors.detectOutdatedCompilerVersion(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma statement.' })
+      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
@@ -164,7 +164,7 @@ describe('Test floating pragma (SWC-103) vulnerability detector', () => {
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.FLOATING_PRAGMA)
       const pragmaStatement = vulnerabilityDetectors.detectFloatingPragma(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma statement.' })
+      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
