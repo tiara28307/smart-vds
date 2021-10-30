@@ -334,127 +334,155 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
 })
 
 describe('Test TX Origin Vulnerability', () => {
-  it('should detect tx.origin in if statement and require statement', () => {
+  it('should detect tx.origin in if statement and require statement', async () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin1.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
-    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree, patterns)
     assert.equal(TxOriginFound.length, 2, 'Vulnerability TX.Origin is not found in Smart Contract.')
   })
 
-  it('should detect 3 vulnerable statements: one if statement, one require statement, and one assignment statement', () => {
+  it('should detect 3 vulnerable statements: one if statement, one require statement, and one assignment statement', async () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin2.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
-    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree, patterns)
     assert.equal(TxOriginFound.length, 3, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
   // tx.origin is not utilized by tested smart contract
-  it('should not detect any vulnerable statements', () => {
+  it('should not detect any vulnerable statements', async () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin3.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
-    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree, patterns)
     assert.equal(TxOriginFound.length, 0, 'Vulnerability TX.Origin is found in Smart Contract')
   })
 
-  it('should detect a single vulnerable assignment statement', () => {
+  it('should detect a single vulnerable assignment statement', async () => {
     const txoriginfile = 'tests/resources/Tx.origin/txorigin4.sol'
     const fileContents = file.readFileContents(txoriginfile).toString()
     const parseTree = parser.parse(fileContents)
-    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    const TxOriginFound = vulnerabilityDetectors.detectTXOrigin(parseTree, patterns)
     assert.equal(TxOriginFound.length, 1, 'Vulnerability TX.Origin is not found in Smart Contract')
   })
 })
 
 describe('Test Underflow Vulnerability', () => {
   // Underflow condition found in Smart Contract
-  it('Underflow condition found in Smart Contract', () => {
+  it('Underflow condition found in Smart Contract', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow1.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
-  it('should not detect vulnerability because compiler version > 0.8.0', () => {
+  it('should not detect vulnerability because compiler version > 0.8.0', async () => {
     const underflowFile = 'tests/resources/Underflow/underflow13.sol'
     const fileContents = file.readFileContents(underflowFile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow was found in Smart Contract.')
   })
 
   // Underflow condition found in Smart Contract
-  it('Underflow condition is handled in If Statement', () => {
+  it('Underflow condition is handled in If Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow2.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
   // Underflow condition found in Smart Contract
-  it('Underflow condition found in If Statement', () => {
+  it('Underflow condition found in If Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow10.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
   // Underflow condition is handled in If Statement
-  it('Underflow condition is handled in If Statement with multiple condition', () => {
+  it('Underflow condition is handled in If Statement with multiple condition', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow11.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
   // Underflow condition found in Smart Contract
-  it('Underflow condition is handled in If Statement another example', () => {
+  it('Underflow condition is handled in If Statement another example', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow12.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
   })
 
   // Underflow condition is handled in While Statement
-  it('Underflow condition is handled in While Statement', () => {
+  it('Underflow condition is handled in While Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow6.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
   // Underflow condition found in While Statement
-  it('Underflow condition found in While Statement', () => {
+  it('Underflow condition found in While Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow8.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
   // Underflow condition is handled in For Statement
-  it('Underflow condition handled in For Statement', () => {
+  it('Underflow condition handled in For Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow7.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
   // Underflow condition found in For Statement
-  it('Underflow condition found in For Statement', () => {
+  it('Underflow condition found in For Statement', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow9.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is found in Smart Contract.')
   })
 
@@ -469,76 +497,91 @@ describe('Test Underflow Vulnerability', () => {
   }) */
 
   // Underflow condition handled in Smart Contract with expression is a -= b
-  it('Underflow condition handled in Smart Contract with expression is a -= b', () => {
+  it('Underflow condition handled in Smart Contract with expression is a -= b', async () => {
     const underflowfile = 'tests/resources/Underflow/underflow14.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 0, 'Vulnerability Underflow is not found in Smart Contract.')
-    console.log(UnderflowFound[1])
   })
 })
 
 describe('Test Overflow Vulnerability', () => {
   // Overflow condition found in Smart Contract
-  it('Overflow condition found in Smart Contract', () => {
+  it('Overflow condition found in Smart Contract', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow3.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
   })
 
-  it('should not detect vulnerability because compiler version > 0.8.0', () => {
+  it('should not detect vulnerability because compiler version > 0.8.0', async () => {
     const overflowFile = 'tests/resources/Overflow/overflow10.sol'
     const fileContents = file.readFileContents(overflowFile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow was found in Smart Contract.')
   })
 
   // Overflow condition handled in Smart Contract
-  it('Overflow condition handled in If condition for uint8', () => {
+  it('Overflow condition handled in If condition for uint8', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow1.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow found in Smart Contract.')
   })
 
   // Overflow condition handled in Smart Contract
-  it('Overflow condition handled in If condition for uint16', () => {
+  it('Overflow condition handled in If condition for uint16', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow5.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow found in Smart Contract.')
   })
 
   // Overflow condition handled in While Loop
-  it('Overflow condition handled in While Loop', () => {
+  it('Overflow condition handled in While Loop', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow7.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow found in Smart Contract.')
   })
 
   // Overflow condition found in While Loop
-  it('Overflow condition found in While Loop', () => {
+  it('Overflow condition found in While Loop', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow8.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow not found in Smart Contract.')
   })
 
   // Overflow condition found in For Loop
-  it('Overflow condition found in For Loop', () => {
+  it('Overflow condition found in For Loop', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow9.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 0, 'Vulnerability Overflow found in Smart Contract.')
   })
 
@@ -553,12 +596,13 @@ describe('Test Overflow Vulnerability', () => {
   }) */
 
   // Overflow condition found in if condition in Smart Contract with expression a += b
-  it('Overflow condition found in if condition in Smart Contract with expression a += b', () => {
+  it('Overflow condition found in if condition in Smart Contract with expression a += b', async () => {
     const overflowfile = 'tests/resources/Overflow/overflow11.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
-    console.log(OverflowFound[1])
   })
 })
