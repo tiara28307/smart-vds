@@ -6,7 +6,8 @@ const figlet = require('figlet')
 const parser = require('@solidity-parser/parser')
 
 const fileUtils = require('./utils/fileUtils')
-const databaseUtils = require('./utils/databaseUtils')
+const db = require('./utils/databaseUtils')
+const { vulnerabilityScanner } = require('./vulnerability-scanner')
 
 // Clear the console window
 clear()
@@ -38,18 +39,15 @@ const scan = async () => {
 
     // Generate parse tree from retrieved file contents
     console.log(chalk.greenBright('Parsing Solidity source code...'))
-    const parseTree = parser.parse(fileContents, { tokens: true })
-    console.log(parseTree)
+    const parseTree = parser.parse(fileContents)
 
-    // Connect to DB
-    const connectEstablished = await databaseUtils.establishDbConnection()
-    if (connectEstablished) {
-      console.log(chalk.greenBright('Successfully connected to database...'))
-      // Retrieve vulnerabilities (patterns and associated information) from DB
-      const vulnerabilitiesMap = await databaseUtils.retrieveAllPatterns()
-      console.log(vulnerabilitiesMap)
-    } else {
-      process.exit(0)
+    // Connect to database
+    const establishedConnection = await db.establishDbConnection()
+
+    if (establishedConnection) {
+      // Scan parse tree for vulnerabilities
+      console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
+      await vulnerabilityScanner(parseTree)
     }
   } catch (err) {
     if (err instanceof parser.ParserError) {
