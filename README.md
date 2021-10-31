@@ -2,7 +2,7 @@
 Vulnerability Detection Scanner for Smart Contracts
 
 ## Description
-**Smart VDS** is an automated static analysis tool for detecting five of the most common code-level vulnerabilities that 
+**Smart VDS** is an automated static analysis tool for detecting seven of the most common code-level vulnerabilities that 
 occur in smart contracts. Smart VDS is able to run on your local machine and scan compilable Solidity files from your
 machine's local storage. Smart VDS retrieves and reads the file contents of a specified Solidity file and then generates
 a parse tree from the smart contract’s source code using an implementation of ANTLR 
@@ -12,12 +12,14 @@ mitigating actions that can be taken.
 
 #### Vunerabilities Detected:
 1. Unchecked Call Return Value
-2. DoS with Failed Call
-3. Re-entrancy
-4. Authorization through tx.origin
-5. Integer Overflow and Underflow
+2. Re-entrancy
+3. Authorization through tx.origin
+4. Integer Overflow and Underflow
+5. Outdated Compiler Version
+6. Floating Pragma
+7. Message Call with Hardcoded Gas Amount
 
-## Getting Started from Blackboard (Round One)
+## Getting Started from Blackboard (Round Two)
 *Installation and usage of Smart VDS tool for Professor and TA of CS 5374.*
 
 ### Installation
@@ -38,41 +40,42 @@ mitigating actions that can be taken.
     ```shell
     $ smart-vds
     ```
-2. Input file path into Smart VDS CLI
-    ```shell
-    ? Enter the file path of the Solidity smart contract that you would like to scan: 
-   /Users/tcarroll/codebase/CS-5374/assignment_1/Greeter.sol
-    ```
-   ```shell
-    // Output should look similar to:
+   1. Input file path into Smart VDS CLI
+       ```shell
+       ? Enter the file path of the Solidity smart contract that you would like to scan: 
+      /Users/tcarroll/codebase/CS-5374/smart-vds/contracts/Crowdsale.sol
+       ```
+      ```shell
+       // Output should look like:
       
-     Parsing Solidity source code...
-     {
-       type: 'SourceUnit',
-       children: [
-         { type: 'PragmaDirective', name: 'solidity', value: '^0.4.0' },
-         {
-             type: 'ContractDefinition',
-             name: 'Greeter',
-             baseContracts: [],
-             subNodes: [Array],
-             kind: 'contract'
-         }
-       ],
-       tokens: [
-         { type: 'Keyword', value: 'pragma' },
-         { type: 'Identifier', value: 'solidity' },
-         { type: 'Punctuator', value: '^' },
-         { type: 'Version', value: '0.4.0' },
-         { type: 'Punctuator', value: ';' },
-         { type: 'Keyword', value: 'contract' },
-         { type: 'Identifier', value: 'Greeter' },
-         { type: 'Punctuator', value: '{' },
-         { type: 'Type', value: 'string' },
-         { type: 'Keyword', value: 'public' },
-         { type: 'Identifier', value: 'yourName' },
-         ...
-   ```
+        Parsing Solidity source code...
+        Scanning parse tree for vulnerabilities...
+        Database connected.
+        Types of Vulnerabilities Detected:  2
+        Vulnerabilities:
+          HARDCODED_GAS_AMOUNT:  1
+          [
+            {
+              type: 'IfStatement',
+              condition: {
+              type: 'BinaryOperation',
+              operator: '>=',
+              left: [Object],
+              right: [Object]
+            },
+            trueBody: { type: 'Block', statements: [Array] },
+            falseBody: { type: 'Block', statements: [Array] }
+            }
+          ]
+          REENTRANCY:  1
+          [
+            {
+              index: 1,
+              statement: { type: 'ExpressionStatement', expression: [Object] }
+            }
+          ]
+        Scan complete.
+      ```
       
 ## Getting Started from GitHub
 
@@ -105,7 +108,7 @@ This project uses [node](https://nodejs.org/en/download/) and npm. Node.js sourc
 2. Input file path into Smart VDS CLI
     ```shell
     ? Enter the file path of the Solidity smart contract that you would like to scan: 
-   /Users/tcarroll/codebase/CS-5374/assignment_1/PayRent.sol
+   /Users/tcarroll/codebase/CS-5374/smart-vds/contracts/Crowdsale.sol
    
    // Output: report
     ```
