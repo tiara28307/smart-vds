@@ -40,42 +40,48 @@ mitigating actions that can be taken.
     ```shell
     $ smart-vds
     ```
-   1. Input file path into Smart VDS CLI
-       ```shell
-       ? Enter the file path of the Solidity smart contract that you would like to scan: 
-      /Users/tcarroll/codebase/CS-5374/smart-vds/contracts/Crowdsale.sol
-       ```
-      ```shell
-       // Output should look like:
+2. Input file path into Smart VDS CLI
+   - File path to contract that detects hardcoded gas amount and re-entrancy: 
+   
+   `../smart-vds/contracts/Crowdsale.sol`
+   - File path to contact that detects all 7 vulnerabilities: 
+   
+   `../smart-vds/tests/resources/vulnerabilityScanner/ VulnerabilityScannerAll.sol`
+    ```shell
+    ? Enter the file path of the Solidity smart contract that you would like to scan: 
+   /Users/tcarroll/codebase/CS-5374/smart-vds/contracts/Crowdsale.sol
+    ```
+   ```shell
+    // Output should look like:
       
-        Parsing Solidity source code...
-        Scanning parse tree for vulnerabilities...
-        Database connected.
-        Types of Vulnerabilities Detected:  2
-        Vulnerabilities:
-          HARDCODED_GAS_AMOUNT:  1
-          [
-            {
-              type: 'IfStatement',
-              condition: {
-              type: 'BinaryOperation',
-              operator: '>=',
-              left: [Object],
-              right: [Object]
-            },
-            trueBody: { type: 'Block', statements: [Array] },
-            falseBody: { type: 'Block', statements: [Array] }
-            }
-          ]
-          REENTRANCY:  1
-          [
-            {
-              index: 1,
-              statement: { type: 'ExpressionStatement', expression: [Object] }
-            }
-          ]
-        Scan complete.
-      ```
+     Parsing Solidity source code...
+     Scanning parse tree for vulnerabilities...
+     Database connected.
+     Types of Vulnerabilities Detected:  2
+     Vulnerabilities:
+       HARDCODED_GAS_AMOUNT:  1
+       [
+         {
+           type: 'IfStatement',
+           condition: {
+           type: 'BinaryOperation',
+           operator: '>=',
+           left: [Object],
+           right: [Object]
+         },
+         trueBody: { type: 'Block', statements: [Array] },
+         falseBody: { type: 'Block', statements: [Array] }
+         }
+       ]
+       REENTRANCY:  1
+       [
+         {
+           index: 1,
+           statement: { type: 'ExpressionStatement', expression: [Object] }
+         }
+       ]
+     Scan complete.
+   ```
       
 ## Getting Started from GitHub
 
