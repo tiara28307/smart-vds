@@ -488,15 +488,15 @@ describe('Test Underflow Vulnerability', () => {
   })
 
   // Underflow condition found in Smart Contract with expression is a -= b
-  // eslint-disable-next-line jest/no-commented-out-tests
-  /* it('Underflow condition found in Smart Contract with expression is a -= b', () => {
-    const underflowfile = 'tests/resources/Underflow/underflow13.sol'
+  it('Underflow condition found in Smart Contract with expression is a -= b', async () => {
+    const underflowfile = 'tests/resources/Underflow/underflow15.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
-    console.log(UnderflowFound[1])
-  }) */
+  })
 
   // Underflow condition handled in Smart Contract with expression is a -= b
   it('Underflow condition handled in Smart Contract with expression is a -= b', async () => {
@@ -588,15 +588,16 @@ describe('Test Overflow Vulnerability', () => {
   })
 
   // Overflow condition found in Smart Contract with expression a += b
-  // eslint-disable-next-line jest/no-commented-out-tests
-  /* it('Overflow condition found in Smart Contract with expression a += b', () => {
-    const overflowfile = 'tests/resources/Overflow/overflow10.sol'
+  it('Overflow condition found in Smart Contract with expression a += b', async () => {
+    const overflowfile = 'tests/resources/Overflow/overflow12.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
     console.log(OverflowFound[1])
-  }) */
+  })
 
   // Overflow condition found in if condition in Smart Contract with expression a += b
   it('Overflow condition found in if condition in Smart Contract with expression a += b', async () => {
