@@ -2,12 +2,12 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract underflow
 {
- function add() public
+ function transferamount() public
  {
 	for(unit i = 10; i>=0; i--)
 	{
-		data.push(i);
+		balance.push(i);
 	}
-	return data;
+	msg.sender.transfer(balance);
  }
 }
