@@ -5,6 +5,7 @@ const file = require('../utils/fileUtils')
 const parser = require('@solidity-parser/parser')
 const vulnerabilityDetectors = require('../utils/vulnerabilityDetectors')
 const { vulnerabilities } = require('../const/vulnerabilities')
+const { vulnerabilityScanner } = require('../vulnerability-scanner')
 
 afterAll(async () => await db.closeDbConnection())
 
@@ -83,7 +84,7 @@ describe('Test outdated compiler version (SWC-102) vulnerability detector', () =
       const patterns = await db.retrievePatterns(vulnerabilities.OUTDATED_COMPILER_VERSION)
       const outdatedPragmaStatement = vulnerabilityDetectors.detectOutdatedCompilerVersion(parseTree, patterns)
       assert.deepStrictEqual(
-        outdatedPragmaStatement,
+        outdatedPragmaStatement[0],
         {
           type: 'PragmaDirective',
           name: 'solidity',
@@ -102,7 +103,7 @@ describe('Test outdated compiler version (SWC-102) vulnerability detector', () =
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.OUTDATED_COMPILER_VERSION)
       const pragmaStatement = vulnerabilityDetectors.detectOutdatedCompilerVersion(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, {})
+      assert.deepStrictEqual(pragmaStatement, [])
     } catch (error) {
       throw error
     }
@@ -116,7 +117,7 @@ describe('Test outdated compiler version (SWC-102) vulnerability detector', () =
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.OUTDATED_COMPILER_VERSION)
       const pragmaStatement = vulnerabilityDetectors.detectOutdatedCompilerVersion(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
+      assert.deepStrictEqual(pragmaStatement[0], { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
@@ -132,7 +133,7 @@ describe('Test floating pragma (SWC-103) vulnerability detector', () => {
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.FLOATING_PRAGMA)
       const pragmaStatement = vulnerabilityDetectors.detectFloatingPragma(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, {
+      assert.deepStrictEqual(pragmaStatement[0], {
         type: 'PragmaDirective',
         name: 'solidity',
         value: '^0.6.0'
@@ -150,7 +151,7 @@ describe('Test floating pragma (SWC-103) vulnerability detector', () => {
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.FLOATING_PRAGMA)
       const pragmaStatement = vulnerabilityDetectors.detectFloatingPragma(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, {})
+      assert.deepStrictEqual(pragmaStatement, [])
     } catch (error) {
       throw error
     }
@@ -164,7 +165,7 @@ describe('Test floating pragma (SWC-103) vulnerability detector', () => {
       await db.establishDbConnection()
       const patterns = await db.retrievePatterns(vulnerabilities.FLOATING_PRAGMA)
       const pragmaStatement = vulnerabilityDetectors.detectFloatingPragma(parseTree, patterns)
-      assert.deepStrictEqual(pragmaStatement, { error: 'Smart contract must contain exactly one pragma directive.' })
+      assert.deepStrictEqual(pragmaStatement[0], { error: 'Smart contract must contain exactly one pragma directive.' })
     } catch (error) {
       throw error
     }
@@ -296,7 +297,7 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
     const patterns = await db.retrievePatterns(vulnerabilities.UNCHECKED_CALL_RETURN_VALUE)
 
     // Act
-    const vulnerabilityDetected = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
+    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
 
     // Assert
     assert.equal(vulnerabilityDetected.length === 1, true, 'Should return vulnerability found.')
@@ -311,7 +312,7 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
     const patterns = await db.retrievePatterns(vulnerabilities.UNCHECKED_CALL_RETURN_VALUE)
 
     // Act
-    const vulnerabilityDetected = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
+    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
 
     // Assert
     assert.equal(vulnerabilityDetected.length > 0, true, 'Should return multiple vulnerabilities found.')
@@ -326,7 +327,7 @@ describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
     const patterns = await db.retrievePatterns(vulnerabilities.UNCHECKED_CALL_RETURN_VALUE)
 
     // Act
-    const vulnerabilityDetected = await vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
+    const vulnerabilityDetected = vulnerabilityDetectors.detectUncheckedCallReturnValue(parseTree, patterns)
 
     // Assert
     assert.equal(vulnerabilityDetected.length > 0, false, 'Should return no vulnerabilities found.')
@@ -487,14 +488,15 @@ describe('Test Underflow Vulnerability', () => {
   })
 
   // Underflow condition found in Smart Contract with expression is a -= b
-  /* it('Underflow condition found in Smart Contract with expression is a -= b', () => {
-    const underflowfile = 'tests/resources/Underflow/underflow13.sol'
+  it('Underflow condition found in Smart Contract with expression is a -= b', async () => {
+    const underflowfile = 'tests/resources/Underflow/underflow15.sol'
     const fileContents = file.readFileContents(underflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_UNDERFLOW)
+    const UnderflowFound = vulnerabilityDetectors.detectUnderFlow(parseTree, patterns)
     assert.equal(UnderflowFound[0], 1, 'Vulnerability Underflow is not found in Smart Contract.')
-    console.log(UnderflowFound[1])
-  }) */
+  })
 
   // Underflow condition handled in Smart Contract with expression is a -= b
   it('Underflow condition handled in Smart Contract with expression is a -= b', async () => {
@@ -586,14 +588,16 @@ describe('Test Overflow Vulnerability', () => {
   })
 
   // Overflow condition found in Smart Contract with expression a += b
-  /* it('Overflow condition found in Smart Contract with expression a += b', () => {
-    const overflowfile = 'tests/resources/Overflow/overflow10.sol'
+  it('Overflow condition found in Smart Contract with expression a += b', async () => {
+    const overflowfile = 'tests/resources/Overflow/overflow12.sol'
     const fileContents = file.readFileContents(overflowfile).toString()
     const parseTree = parser.parse(fileContents)
-    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree)
+    await db.establishDbConnection()
+    const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
+    const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
     console.log(OverflowFound[1])
-  }) */
+  })
 
   // Overflow condition found in if condition in Smart Contract with expression a += b
   it('Overflow condition found in if condition in Smart Contract with expression a += b', async () => {
@@ -604,5 +608,124 @@ describe('Test Overflow Vulnerability', () => {
     const patterns = await db.retrievePatterns(vulnerabilities.INT_OVERFLOW)
     const OverflowFound = vulnerabilityDetectors.detectOverFlow(parseTree, patterns)
     assert.equal(OverflowFound[0], 1, 'Vulnerability Overflow is not found in Smart Contract.')
+  })
+})
+
+describe('Test function that runs and aggregates the results of all vulnerability detectors', () => {
+  it('should detect one floating pragma vulnerability and one reentrancy vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner1.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 2)
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.FLOATING_PRAGMA)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.REENTRANCY)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+  })
+
+  it('should detect one floating pragma vulnerability and one outdated compiler vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner2.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 2)
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.FLOATING_PRAGMA)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.OUTDATED_COMPILER_VERSION)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+  })
+
+  it('should detect one floating pragma vulnerability, one outdated compiler vulnerability, and one unchecked call return value vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner3.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 3)
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.FLOATING_PRAGMA)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.OUTDATED_COMPILER_VERSION)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[2].vid, vulnerabilities.UNCHECKED_CALL_RETURN_VALUE)
+    assert.equal(vulnerabilitiesDetected[2].object.length, 1)
+  })
+
+  it('should detect three tx.origin vulnerabilities and one hardcoded gas amount vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner4.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 2)
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 3)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.HARDCODED_GAS_AMOUNT)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+  })
+
+  it('should detect one overflow vulnerability, one underflow vulnerability, one outdated compiler vulnerability, and one reentrancy vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner5.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 4)
+
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.INT_OVERFLOW)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.INT_UNDERFLOW)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[2].vid, vulnerabilities.OUTDATED_COMPILER_VERSION)
+    assert.equal(vulnerabilitiesDetected[2].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[3].vid, vulnerabilities.REENTRANCY)
+    assert.equal(vulnerabilitiesDetected[3].object.length, 1)
+  })
+
+  it('should detect all seven of the detectable vulnerability types: ' +
+      'two tx.origin vulnerabilities, one floating pragma vulnerability, ' +
+      'one hardcoded gas amount vulnerability, one integer overflow vulnerability, ' +
+      'one integer underflow vulnerability, one outdated compiler vulnerability, ' +
+      'one reentrancy vulnerability, and one unchecked call return value vulnerability', async () => {
+    const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScannerAll.sol'
+    const fileContents = file.readFileContents(solidityFile).toString()
+    const parseTree = parser.parse(fileContents)
+    await db.establishDbConnection()
+    const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+    assert.equal(vulnerabilitiesDetected.length, 8)
+
+    assert.equal(vulnerabilitiesDetected[0].vid, vulnerabilities.AUTH_THROUGH_TX_ORIGIN)
+    assert.equal(vulnerabilitiesDetected[0].object.length, 2)
+
+    assert.equal(vulnerabilitiesDetected[1].vid, vulnerabilities.FLOATING_PRAGMA)
+    assert.equal(vulnerabilitiesDetected[1].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[2].vid, vulnerabilities.HARDCODED_GAS_AMOUNT)
+    assert.equal(vulnerabilitiesDetected[2].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[3].vid, vulnerabilities.INT_OVERFLOW)
+    assert.equal(vulnerabilitiesDetected[3].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[4].vid, vulnerabilities.INT_UNDERFLOW)
+    assert.equal(vulnerabilitiesDetected[4].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[5].vid, vulnerabilities.OUTDATED_COMPILER_VERSION)
+    assert.equal(vulnerabilitiesDetected[5].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[6].vid, vulnerabilities.REENTRANCY)
+    assert.equal(vulnerabilitiesDetected[6].object.length, 1)
+
+    assert.equal(vulnerabilitiesDetected[7].vid, vulnerabilities.UNCHECKED_CALL_RETURN_VALUE)
+    assert.equal(vulnerabilitiesDetected[7].object.length, 1)
   })
 })

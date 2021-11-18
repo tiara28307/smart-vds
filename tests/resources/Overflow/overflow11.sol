@@ -4,7 +4,7 @@ contract overflow
 {
     uint16 public balance = 65535;
 
-    function add(uint16 deposit) public
+    function update_balance(uint16 deposit) public
     {
         if((balance + deposit) < 0)
         {
