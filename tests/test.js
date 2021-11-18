@@ -290,7 +290,7 @@ describe('Test message call with hardcoded gas amount vulnerability detector', (
 describe('Test Unchecked Call Return Value (SWC-104) Vulnerability', () => {
   it('should detect one unchecked call return value', async () => {
     // Arrange
-    const uncheckedCallReturnValueFilePath = 'tests/resources/solidity/UncheckedCallReturnValue.sol'
+    const uncheckedCallReturnValueFilePath = 'tests/resources/solidity/Lotto_UncheckedCallReturnValue.sol'
     const fileContents = file.readFileContents(uncheckedCallReturnValueFilePath).toString()
     const parseTree = parser.parse(fileContents)
     await db.establishDbConnection()
