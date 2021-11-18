@@ -24,7 +24,7 @@ module.exports = {
         console.log(chalk.red('Database disconnected.'))
         return false
       case 1:
-        console.log(chalk.greenBright('Database connected.'))
+        // console.log(chalk.greenBright('Database connected.'))
         return true
       case 2:
         console.log(chalk.greenBright('Database is connecting...'))
