@@ -1,5 +1,5 @@
-const assert = require('assert');
-const db = require('../utils/databaseUtils');
+const assert = require('assert')
+const db = require('../utils/databaseUtils')
 
 afterAll(async () => await db.closeDbConnection())
 
