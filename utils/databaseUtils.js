@@ -69,5 +69,20 @@ module.exports = {
       .catch(err => {
         return console.log(chalk.red(err))
       })
+  },
+  retrieveVulnerabilityInfo: (id) => {
+    return VulnerabilityPattern.findOne({ vulnerability_id: id })
+      .then((vulnerability) => {
+        const vulnerabilityInfo = {
+          name: vulnerability.vulnerability_name,
+          severity: vulnerability.severity,
+          swcCode: vulnerability.swc_code,
+          mitigations: vulnerability.mitigation
+        }
+        return vulnerabilityInfo
+      })
+      .catch((error) => {
+        return console.log(chalk.red(error))
+      })
   }
 }
