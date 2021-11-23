@@ -5,13 +5,14 @@ const db = require('./databaseUtils')
 
 const generateReport = async (vulnerabilitiesDetected) => {
   if (vulnerabilitiesDetected.length === 0) {
-    console.log(chalk.greenBright('No Vulnerabilities Found'))
+    console.log(chalk.blueBright('No Vulnerabilities Found'))
   } else {
+    console.log(chalk.redBright('\nVulnerabilities Detected. Generating Report...\n'))
     let totalVulnerabilityCount = 0
     const vulnerabilities = []
     try {
       // Print date, time (UTC)
-      console.log(chalk.greenBright(new Date().toUTCString()) + '\n\n')
+      console.log(chalk.greenBright(new Date().toUTCString()) + '\n')
 
       // Verify database connection
       const isConnected = db.isDbConnected()
