@@ -8,6 +8,7 @@ const parser = require('@solidity-parser/parser')
 const fileUtils = require('./utils/fileUtils')
 const db = require('./utils/databaseUtils')
 const { vulnerabilityScanner } = require('./vulnerability-scanner')
+const { generateReport } = require('./utils/generateReport')
 
 // Clear the console window
 clear()
@@ -47,7 +48,8 @@ const scan = async () => {
     if (establishedConnection) {
       // Scan parse tree for vulnerabilities
       console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
-      await vulnerabilityScanner(parseTree)
+      const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+      await generateReport(vulnerabilitiesDetected)
     }
   } catch (err) {
     if (err instanceof parser.ParserError) {
