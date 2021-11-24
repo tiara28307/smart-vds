@@ -7,12 +7,15 @@ const generateReport = async (vulnerabilitiesDetected) => {
   if (vulnerabilitiesDetected.length === 0) {
     console.log(chalk.blueBright('No Vulnerabilities Found'))
   } else {
-    console.log(chalk.redBright('\nVulnerabilities Detected. Generating Report...\n'))
+    console.log(chalk.redBright('\nVulnerabilities Detected.'))
+    console.log(chalk.greenBright('Generating Report...\n'))
     let totalVulnerabilityCount = 0
     const vulnerabilities = []
     try {
+      // Print title of report
+      console.log(chalk.bgBlack('Smart VDS Report\n'))
       // Print date, time (UTC)
-      console.log(chalk.greenBright(new Date().toUTCString()) + '\n')
+      console.log(new Date().toUTCString())
 
       // Verify database connection
       const isConnected = db.isDbConnected()
@@ -31,7 +34,7 @@ const generateReport = async (vulnerabilitiesDetected) => {
 
         db.closeDbConnection()
 
-        console.log(chalk.greenBright(`Number of Vulnerabilities Found: ${totalVulnerabilityCount}`) + '\n')
+        console.log('Number of Vulnerabilities Found: ' + chalk.yellowBright(`${totalVulnerabilityCount}`) + '\n')
 
         const table = new Table({ head: [chalk.greenBright('Name'), chalk.greenBright('Severity'), chalk.greenBright('Number Found')], colWidths: [50, 50, 50] })
 
@@ -50,7 +53,7 @@ const generateReport = async (vulnerabilitiesDetected) => {
         })
 
         console.log(table.toString())
-        console.log('\n\n')
+        console.log('\n')
         vulnerabilities.forEach((vulnerability) => {
           console.log(chalk.greenBright.underline.bold(vulnerability.name))
           let severity
@@ -61,17 +64,17 @@ const generateReport = async (vulnerabilitiesDetected) => {
           } else if (vulnerability.severity === 'HIGH') {
             severity = chalk.redBright(vulnerability.severity)
           }
-          console.log(chalk.greenBright('Severity Level: ') + severity)
+          console.log('Severity Level: ' + severity)
           if (vulnerability.count === 1) {
-            console.log(chalk.greenBright(`Found: ${vulnerability.count} Instance`))
+            console.log('Found: ' + chalk.yellowBright(`${vulnerability.count} `) + 'Instance')
           } else {
-            console.log(chalk.greenBright(`Found: ${vulnerability.count} Instances`))
+            console.log('Found: ' + chalk.yellowBright(`${vulnerability.count} `) + 'Instances')
           }
           let instanceCount = 0
           vulnerability.instances.forEach((instance) => {
             instanceCount += 1
-            console.log(chalk.greenBright(`Instance Number ${instanceCount}:`))
-            console.log(chalk.greenBright(`${JSON.stringify(instance)}\n`))
+            console.log(chalk.cyan(`Instance Number ${instanceCount}:`))
+            console.log(chalk.cyan(`${JSON.stringify(instance)}\n`))
           })
           console.log(chalk.magentaBright.bold('Suggested Mitigations:'))
           let mitigationCount = 0
