@@ -49,6 +49,7 @@ const scan = async () => {
       // Scan parse tree for vulnerabilities
       console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
       const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+      // Generate report
       await generateReport(vulnerabilitiesDetected)
     }
   } catch (err) {
