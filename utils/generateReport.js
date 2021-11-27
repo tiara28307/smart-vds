@@ -2,6 +2,7 @@ const chalk = require('chalk')
 const Table = require('cli-table')
 
 const db = require('./databaseUtils')
+const vulnInfo = require('./vulnerabilityInfo')
 
 const generateReport = async (vulnerabilitiesDetected) => {
   if (vulnerabilitiesDetected.length === 0) {
@@ -25,11 +26,16 @@ const generateReport = async (vulnerabilitiesDetected) => {
           const vid = vulnTypeGroup.vid
           const numberVulnerabilities = vulnTypeGroup.object.length
           totalVulnerabilityCount += numberVulnerabilities
+
           // Retrieve vulnerability information from database
           const vulnerabilityInfo = await db.retrieveVulnerabilityInfo(vid)
           vulnerabilityInfo.count = numberVulnerabilities
           vulnerabilityInfo.instances = vulnTypeGroup.object
           vulnerabilities.push(vulnerabilityInfo)
+
+          // Set vulnerability information for later use
+          vulnInfo.setVulnInformation(vulnerabilities)
+          vulnInfo.setTotalVulnCount(totalVulnerabilityCount)
         }
 
         db.closeDbConnection()
