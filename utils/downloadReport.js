@@ -1,6 +1,4 @@
 const fs = require('fs')
-const os = require('os')
-const path = require('path')
 const PDFDocument = require('pdfkit-table')
 
 const doc = new PDFDocument({ size: 'A4' })
@@ -12,16 +10,16 @@ const vulnInfo = require('./vulnerabilityInfo')
 *           - Create pdf document with vulnerabilities detected information
 *           - Return file path to downloaded report
 * */
-const downloadReport = async () => {
+const downloadReport = async (downloadFilePath) => {
   const vulnerabilities = vulnInfo.getVulnInformation()
   const totalVulnerabilityCount = vulnInfo.getTotalVulnCount()
 
-  // Get file path to user's `Download` directory
-  const filePath = path.join(os.homedir(), 'Downloads')
+  // Get file path for download
+  const filePath = downloadFilePath
 
   // Write to file path for Smart VDS Report
   doc
-    .pipe(fs.createWriteStream(`${filePath}/smart-vds-report.pdf`))
+    .pipe(fs.createWriteStream(filePath))
 
   // Create pdf document
   doc
@@ -153,7 +151,6 @@ const downloadReport = async () => {
 
   // Finalize the PDF and save to file path
   doc.end()
-  return `${filePath}/smart-vds-report.pdf`
 }
 
 module.exports = { downloadReport }
