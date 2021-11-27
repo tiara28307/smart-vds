@@ -15,7 +15,7 @@ describe('Test download smart-vds report function', () => {
     const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner5.sol'
     const fileContents = file.readFileContents(solidityFile).toString()
     const parseTree = parser.parse(fileContents)
-    const testFilePath = '../tests/resources/test-report.pdf'
+    const testFilePath = './resources/test-report.pdf'
     const userResponse = 'yes'
 
     // Act
@@ -40,7 +40,7 @@ describe('Test download smart-vds report function', () => {
     const solidityFile = 'tests/resources/vulnerabilityScanner/VulnerabilityScanner5.sol'
     const fileContents = file.readFileContents(solidityFile).toString()
     const parseTree = parser.parse(fileContents)
-    const testFilePath = '../tests/resources/test-report.pdf'
+    const testFilePath = './resources/test-report.pdf'
     const userResponse = 'no'
 
     // Act
