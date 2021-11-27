@@ -9,6 +9,7 @@ const fileUtils = require('./utils/fileUtils')
 const db = require('./utils/databaseUtils')
 const { vulnerabilityScanner } = require('./vulnerability-scanner')
 const { generateReport } = require('./utils/generateReport')
+const { downloadReport } = require('./utils/downloadReport')
 
 // Clear the console window
 clear()
@@ -49,8 +50,17 @@ const scan = async () => {
       // Scan parse tree for vulnerabilities
       console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
       const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+
       // Generate report
       await generateReport(vulnerabilitiesDetected)
+
+      // Prompt user to download report
+      const promptDownload = await fileUtils.promptToDownloadReport()
+      if (promptDownload.download === 'yes' || promptDownload.download === 'Yes') {
+        // Download report
+        const filePathForReport = await downloadReport()
+        console.log(chalk.greenBright(`Smart VDS Report was successfully downloaded! \nLocated at: ${filePathForReport}`))
+      }
     }
   } catch (err) {
     if (err instanceof parser.ParserError) {
