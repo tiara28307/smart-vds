@@ -7,6 +7,7 @@ const parser = require('@solidity-parser/parser')
 
 const fileUtils = require('./utils/fileUtils')
 const db = require('./utils/databaseUtils')
+const fp = require('./const/download-file-path')
 const { vulnerabilityScanner } = require('./vulnerability-scanner')
 const { generateReport } = require('./utils/generateReport')
 const { downloadReport } = require('./utils/downloadReport')
@@ -58,8 +59,8 @@ const scan = async () => {
       const promptDownload = await fileUtils.promptToDownloadReport()
       if (promptDownload.download === 'yes' || promptDownload.download === 'Yes') {
         // Download report
-        const filePathForReport = await downloadReport()
-        console.log(chalk.greenBright(`Smart VDS Report was successfully downloaded! \nLocated at: ${filePathForReport}`))
+        await downloadReport(fp.downloadFilePath)
+        console.log(chalk.greenBright(`Smart VDS Report was successfully downloaded! \nLocated at: ${fp.downloadFilePath}`))
       }
     }
   } catch (err) {
