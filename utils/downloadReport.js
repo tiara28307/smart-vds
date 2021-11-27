@@ -50,7 +50,7 @@ const downloadReport = async (downloadFilePath) => {
     title: '',
     fontSize: 10,
     headers: [
-      { label: 'Name', property: 'name', width: 150, headerAlign: 'center', renderer: null },
+      { label: 'Name', property: 'name', width: 200, headerAlign: 'center', renderer: null },
       { label: 'Severity', property: 'severity', width: 90, align: 'center', renderer: null },
       { label: 'Number Found', property: 'count', width: 90, align: 'center', renderer: null }
     ],
@@ -59,7 +59,28 @@ const downloadReport = async (downloadFilePath) => {
 
   const tableOptions = {
     prepareHeader: () => doc.font('Times-Bold').fontSize(10),
-    prepareRow: (row, indexColumn, indexRow, rectRow) => doc.font('Times-Roman').fontSize(10)
+    prepareRow: (row, indexColumn, indexRow, rectRow) => {
+      doc.font('Times-Roman').fontSize(10)
+      if (indexColumn === 1) {
+        if (row.severity === 'LOW') {
+          doc
+            .font('Times-Bold')
+            .fillColor('#fbda19')
+        } else if (row.severity === 'MEDIUM') {
+          doc
+            .font('Times-Bold')
+            .fillColor('#ff9600')
+        } else if (row.severity === 'HIGH') {
+          doc
+            .font('Times-Bold')
+            .fillColor('#f44336')
+        }
+      } else {
+        doc
+          .font('Times-Roman')
+          .fillColor('black')
+      }
+    }
   }
 
   await doc.table(table, tableOptions, () => {})
