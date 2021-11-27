@@ -61,5 +61,43 @@ module.exports = {
   readFileContents: (filePath) => {
     // Retrieve file contents once validated
     return fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' })
+  },
+
+  /* promptToDownloadReport function
+    *       Purpose: Prompt user to download Smart VDS Report
+    *       Tasks Executed By Function:
+    *           - Run the inquirer package's prompt function
+    * */
+  promptToDownloadReport: () => {
+    const questions = [{
+      name: 'download',
+      type: 'input',
+      message: chalk.greenBright('Would you like to download Smart VDS Report? (yes/no):'),
+      validate: (answer) => {
+        if (answer.length > 0) {
+          if (answer === 'yes' || answer === 'Yes') {
+            return true
+          } else if (answer === 'no' || answer === 'No') {
+            return true
+          } else {
+            return chalk.red('Invalid response. Must type "yes" or "no".')
+          }
+        } else {
+          return chalk.red('Please enter if you would like to download report.')
+        }
+      }
+    }]
+    return inquirer
+      .prompt(questions)
+      .then(answers => {
+        return answers
+      })
+      .catch(err => {
+        if (err.isTtyError) {
+          return console.log(chalk.red('Prompt could not be rendered in the current environment.'))
+        } else {
+          return console.log(chalk.red(err))
+        }
+      })
   }
 }

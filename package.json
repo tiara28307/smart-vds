@@ -39,6 +39,8 @@
     "inquirer": "^8.1.5",
     "jsonpath": "^1.1.1",
     "jsonpath-plus": "^6.0.1",
-    "mongoose": "^6.0.8"
+    "mongoose": "^6.0.8",
+    "pdfkit": "^0.13.0",
+    "pdfkit-table": "^0.1.70"
   }
 }

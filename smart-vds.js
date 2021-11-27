@@ -7,8 +7,10 @@ const parser = require('@solidity-parser/parser')
 
 const fileUtils = require('./utils/fileUtils')
 const db = require('./utils/databaseUtils')
+const fp = require('./const/download-file-path')
 const { vulnerabilityScanner } = require('./vulnerability-scanner')
 const { generateReport } = require('./utils/generateReport')
+const { downloadReport } = require('./utils/downloadReport')
 
 // Clear the console window
 clear()
@@ -49,7 +51,17 @@ const scan = async () => {
       // Scan parse tree for vulnerabilities
       console.log(chalk.greenBright('Scanning parse tree for vulnerabilities...'))
       const vulnerabilitiesDetected = await vulnerabilityScanner(parseTree)
+
+      // Generate report
       await generateReport(vulnerabilitiesDetected)
+
+      // Prompt user to download report
+      const promptDownload = await fileUtils.promptToDownloadReport()
+      if (promptDownload.download === 'yes' || promptDownload.download === 'Yes') {
+        // Download report
+        await downloadReport(fp.downloadFilePath)
+        console.log(chalk.greenBright(`Smart VDS Report was successfully downloaded! \nLocated at: ${fp.downloadFilePath}`))
+      }
     }
   } catch (err) {
     if (err instanceof parser.ParserError) {
