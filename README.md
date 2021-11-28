@@ -12,18 +12,18 @@ mitigating actions that can be taken.
 
 #### Vunerabilities Detected:
 1. Unchecked Call Return Value
-2. Re-entrancy
+2. Reentrancy
 3. Authorization through tx.origin
 4. Integer Overflow and Underflow
 5. Outdated Compiler Version
 6. Floating Pragma
 7. Message Call with Hardcoded Gas Amount
 
-## Getting Started from Blackboard (Round Two)
+## Getting Started from Blackboard (Round Three)
 *Installation and usage of Smart VDS tool for Professor and TA of CS 5374.*
 
 ### Installation
-1. Have [node](https://nodejs.org/en/download/) and npm installed on your machine
+1. Have [node](https://nodejs.org/en/download/) and npm installed on your local machine
 2. Pull down smart-vds source code from Blackboard
 3. Open your terminal or command prompt
 4. Navigate to smart-vds directory
@@ -44,44 +44,23 @@ mitigating actions that can be taken.
    - File path to contract that detects hardcoded gas amount and re-entrancy: 
    
    `../smart-vds/contracts/Crowdsale.sol`
-   - File path to contact that detects all 7 vulnerabilities: 
+   - File path to contract that detects all 7 vulnerabilities: 
    
    `../smart-vds/tests/resources/vulnerabilityScanner/ VulnerabilityScannerAll.sol`
     ```shell
     ? Enter the file path of the Solidity smart contract that you would like to scan: 
    /Users/tcarroll/codebase/CS-5374/smart-vds/contracts/Crowdsale.sol
     ```
-   ```shell
-    // Output should look like:
-      
-     Parsing Solidity source code...
-     Scanning parse tree for vulnerabilities...
-     Database connected.
-     Types of Vulnerabilities Detected:  2
-     Vulnerabilities:
-       HARDCODED_GAS_AMOUNT:  1
-       [
-         {
-           type: 'IfStatement',
-           condition: {
-           type: 'BinaryOperation',
-           operator: '>=',
-           left: [Object],
-           right: [Object]
-         },
-         trueBody: { type: 'Block', statements: [Array] },
-         falseBody: { type: 'Block', statements: [Array] }
-         }
-       ]
-       REENTRANCY:  1
-       [
-         {
-           index: 1,
-           statement: { type: 'ExpressionStatement', expression: [Object] }
-         }
-       ]
-     Scan complete.
-   ```
+   Output should look like the following:
+   ![alt text](https://user-images.githubusercontent.com/36643475/143727480-540e0bc0-82ba-46eb-a3a7-27902a2590fb.png)
+   ![alt_text](https://user-images.githubusercontent.com/36643475/143727523-d328d378-e8c3-4977-8902-a18e4fa0ff44.png)
+   ![alt_text](https://user-images.githubusercontent.com/36643475/143727536-e623ec68-2f8a-4e7e-9c72-6ba31ff8db0e.png)
+3. At the end it will ask if you would like download a pdf version of the report
+   - You can reply `yes` or `no`
+   - If yes, the program will state if successfully downloaded and where the file is located
+   
+   ![alt_text](https://user-images.githubusercontent.com/36643475/143727609-465391f2-bb33-4ba4-afb8-eeee42769fc5.png)
+
       
 ## Getting Started from GitHub
 

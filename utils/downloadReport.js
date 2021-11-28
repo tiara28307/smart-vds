@@ -30,7 +30,7 @@ const downloadReport = async (downloadFilePath) => {
     })
     .fontSize('10')
     .moveDown(2)
-    .text(new Date().toUTCString(), {
+    .text(new Date().toLocaleString('en-US'), {
       align: 'left'
     })
     .font('Times-Bold')
