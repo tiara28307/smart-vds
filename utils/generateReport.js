@@ -16,7 +16,7 @@ const generateReport = async (vulnerabilitiesDetected) => {
       // Print title of report
       console.log(chalk.bgBlack('Smart VDS Report\n'))
       // Print date, time (UTC)
-      console.log(new Date().toUTCString())
+      console.log(new Date().toLocaleString('en-US'))
 
       // Verify database connection
       const isConnected = db.isDbConnected()
