@@ -1,4 +1,5 @@
-// source: https://github.com/evbots/ethereum_tutorials/blob/master/contract_crowdfund/contract.sol
+// source - https://github.com/evbots/ethereum_tutorials/blob/master/contract_crowdfund/contract.sol
+
 pragma solidity ^0.8.0;
 
 contract token { mapping (address => uint) public coinBalanceOf; function token() {}  function sendCoin(address receiver, uint amount) returns(bool sufficient) {  } }
